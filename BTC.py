@@ -11,7 +11,7 @@ def getApiData(url) :
     return json.dumps(json.load(urllib2.urlopen(url)))
 
 def parseGox(goxData) :
-    start = goxData.find("\"",goxData.find(" ",goxData.find("\"value\":")))
+    start = goxData.find("\"",goxData.find(" ",goxData.find("value\":",goxData.find("\"last\":"))))
     fin = goxData.find("\"", start+1)
     return goxData[start+1:fin]
 
