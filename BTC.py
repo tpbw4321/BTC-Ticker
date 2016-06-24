@@ -2,29 +2,38 @@ import json
 import requests
 import os
 
-btceBtcAPI = 'https://btc-e.com/api/2/btc_usd/ticker'
-btceLtcAPI = 'https://btc-e.com/api/2/ltc_usd/ticker'
-btceXpmAPI = 'https://btc-e.com/api/2/xpm_btc/ticker'
-goxBTC = 'http://data.mtgox.com/api/2/BTCUSD/money/ticker_fast'
+usdCnyRatioAPI = 'http://www.freecurrencyconverterapi.com/api/convert?q=CNY-USD'
+btcUsd = 'btc_usd'
+ltcUsd = 'ltc_usd'
+ethBtc = 'eth_btc'
+ltcBtc = 'ltc_btc'
+btceURL = 'https://btc-e.com/api/3/ticker/'
+#updated to work with new BTC-E api, feel free to add your desired ratio
 
-def btceAPI(API):
-	btceTick = requests.get(API)
-	return btceTick.json()['ticker']['last']
+def btceAPI(URL,uType):
+	btceTick = requests.get(URL+uType)
+	return btceTick.json()[uType]['last']
 
+def getUsdCnyRatio():
+	usdCnyRatio = requests.get(usdCnyRatioAPI)
+	return usdCnyRatio.json()['results']['CNY-USD']['val']
 
 while True :
-	btceBtc = float(btceAPI(btceBtcAPI))
-	btceLtc = float(btceAPI(btceLtcAPI))
-	btceXpm = float(btceAPI(btceXpmAPI))
+    btceBtcUsd = float(btceAPI(btceURL,btcUsd))
+    btceLtcUsd = float(btceAPI(btceURL,ltcUsd))
+    btceEthBtc = float(btceAPI(btceURL,ethBtc))
+    btceLtcBtc = float(btceAPI(btceURL,ltcBtc))
 
-	os.system('clear')
-	print "BTC/USD"
-	print "BTC-e: ", btceBtc
-	print
-	print "LTC/USD"
-	print "BTC-e: ", btceLtc
-	print
-	print "XPM/BTC"
-	print "BTC-e: ", btceXpm
-
-
+    
+    os.system('clear')
+    print "BTC/USD"
+    print "BTC-e: ", btceBtcUsd
+    print
+    print "LTC/USD"
+    print "BTC-e: ", btceLtcUsd
+    print
+    print "LTC/BTC"
+    print "BTC-e: ", btceLtcBtc
+    print
+    print "ETH/BTC"
+    print "BTC-e: ", btceEthBtc
